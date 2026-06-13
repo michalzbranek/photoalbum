@@ -11,7 +11,7 @@
  *   alt   — popis fotografie (pro přístupnost a SEO — nezanedbávej ho!)
  */
 
-const ALBUM_TITLE = "Rodinné fotoalbum";
+const ALBUM_TITLE = "Michalovo Fotoalbum";
 
 const TIMELINE = [
   {
