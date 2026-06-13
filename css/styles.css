@@ -1,0 +1,308 @@
+/* =======================================================================
+   Proměnné
+   ======================================================================= */
+:root {
+  --nav-width:      88px;
+  --mobile-nav-h:   52px;
+
+  --accent:         #9b7c5e;   /* teplý hnědý tón — aktivní rok, nadpisy let */
+  --accent-line:    #ddd0c4;   /* barva vertikální / horizontální čáry nav */
+  --accent-bg:      rgba(155, 124, 94, 0.07);
+
+  --text:           #2c2c2b;
+  --text-muted:     #888;
+  --bg:             #ffffff;
+  --nav-bg:         #faf9f7;
+  --border-light:   #efefed;
+
+  --section-gap:    8rem;
+  --content-max-w:  1280px;
+  --photo-max-h:    68vh;
+
+  --radius:         3px;
+  --shadow-photo:   0 4px 28px rgba(0, 0, 0, 0.08);
+
+  --ease:           0.22s ease;
+}
+
+/* =======================================================================
+   Reset & základ
+   ======================================================================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  line-height: 1.75;
+}
+
+/* =======================================================================
+   Navigace — DESKTOP a TABLET
+   Fixní vertikální lišta vlevo s vertikální čárou na pravém okraji
+   ======================================================================= */
+#timeline-nav {
+  position: fixed;
+  inset: 0 auto 0 0;          /* top:0, right:auto, bottom:0, left:0 */
+  width: var(--nav-width);
+  background: var(--nav-bg);
+  border-right: 2px solid var(--accent-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+#timeline-nav::-webkit-scrollbar { display: none; }
+
+#nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 2.5rem 0;
+  width: 100%;
+}
+
+#nav-list li {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#nav-list li a {
+  display: block;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-radius: var(--radius);
+  transition: color var(--ease), background var(--ease), font-weight var(--ease);
+  text-align: center;
+  white-space: nowrap;
+}
+
+#nav-list li a:hover {
+  color: var(--accent);
+  background: var(--accent-bg);
+}
+
+#nav-list li a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+#nav-list li a.is-active {
+  color: var(--accent);
+  font-weight: 700;
+  background: var(--accent-bg);
+}
+
+/* =======================================================================
+   Hlavní obsah
+   ======================================================================= */
+#main-content {
+  margin-left: var(--nav-width);
+  min-height: 100vh;
+}
+
+/* Záhlaví — název alba */
+#site-header {
+  padding: 5.5rem 5rem 3.5rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+#site-header h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.8rem, 3.5vw, 3.2rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+/* =======================================================================
+   Sekce roků
+   ======================================================================= */
+#sections-container {
+  max-width: var(--content-max-w);
+  padding: 0 5rem;
+}
+
+.timeline-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2.5rem, 4vw, 5rem);
+  align-items: center;
+  padding: var(--section-gap) 0;
+  border-bottom: 1px solid var(--border-light);
+  scroll-margin-top: 2rem;   /* odsazení pro native anchor scroll */
+}
+
+.timeline-section:last-child {
+  border-bottom: none;
+  padding-bottom: calc(var(--section-gap) * 1.5);
+}
+
+/* Liché sekce: fotka vlevo, text vpravo */
+.section-photo { order: 1; }
+.section-text  { order: 2; }
+
+/* Sudé sekce: text vlevo, fotka vpravo */
+.timeline-section:nth-child(even) .section-photo { order: 2; }
+.timeline-section:nth-child(even) .section-text  { order: 1; }
+
+/* — Fotografie — */
+.section-photo {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.section-photo img {
+  display: block;
+  max-width: 100%;
+  max-height: var(--photo-max-h);
+  width: auto;
+  height: auto;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-photo);
+}
+
+/* — Text — */
+.section-text {
+  padding: 1rem 0;
+}
+
+.section-year {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2.8rem, 5vw, 5rem);
+  font-weight: 400;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.03em;
+}
+
+.section-content {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--text);
+  max-width: 46ch;
+}
+
+/* =======================================================================
+   Tablet (768 – 1023 px)
+   ======================================================================= */
+@media (min-width: 768px) and (max-width: 1023px) {
+  :root {
+    --nav-width:    72px;
+    --section-gap:  6rem;
+    --photo-max-h:  60vh;
+  }
+
+  #site-header {
+    padding: 4rem 3rem 2.5rem;
+  }
+
+  #sections-container {
+    padding: 0 3rem;
+  }
+}
+
+/* =======================================================================
+   Mobil (< 768 px)
+   Horizontální lišta nahoře, jednosloupcové sekce
+   ======================================================================= */
+@media (max-width: 767px) {
+  :root {
+    --section-gap:  3.5rem;
+    --photo-max-h:  60vh;
+  }
+
+  /* Přepíná vertikální nav na horizontální lištu */
+  #timeline-nav {
+    inset: 0 0 auto 0;          /* top:0, right:0, bottom:auto, left:0 */
+    width: 100%;
+    height: var(--mobile-nav-h);
+    border-right: none;
+    border-bottom: 2px solid var(--accent-line);
+    overflow-x: auto;
+    overflow-y: hidden;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  #nav-list {
+    flex-direction: row;
+    gap: 0;
+    padding: 0 0.5rem;
+    width: auto;
+    min-width: 100%;
+  }
+
+  #nav-list li {
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  #nav-list li a {
+    font-size: 0.8rem;
+    padding: 0.45rem 0.8rem;
+  }
+
+  /* Obsah posunutý pod fixní lištu */
+  #main-content {
+    margin-left: 0;
+    padding-top: var(--mobile-nav-h);
+  }
+
+  #site-header {
+    padding: 2.5rem 1.25rem 1.5rem;
+  }
+
+  #sections-container {
+    padding: 0 1.25rem;
+  }
+
+  /* Jednosloupcové sekce */
+  .timeline-section {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    scroll-margin-top: calc(var(--mobile-nav-h) + 1rem);
+  }
+
+  /* Fotka vždy nahoře — přebijeme střídání */
+  .section-photo { order: 1 !important; }
+  .section-text  { order: 2 !important; }
+
+  /* Na mobilu fotka plná šířka, poměr zachován (bez max-height = bez deformace) */
+  .section-photo img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .section-year {
+    font-size: 2.6rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .section-content {
+    max-width: none;
+  }
+}

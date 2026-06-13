@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fotoalbum</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Navigace: vertikální lišta na desktopu, horizontální na mobilu -->
+  <nav id="timeline-nav" aria-label="Navigace po rocích">
+    <ul id="nav-list" role="list"></ul>
+  </nav>
+
+  <main id="main-content">
+    <header id="site-header">
+      <h1 id="site-title"></h1>
+    </header>
+
+    <!-- Sekce roků generuje main.js z dat v data.js -->
+    <div id="sections-container"></div>
+  </main>
+
+  <noscript>
+    <p style="padding: 2rem; font-family: sans-serif; color: #555;">
+      Pro zobrazení fotoalba je vyžadován JavaScript.
+    </p>
+  </noscript>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
