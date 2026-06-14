@@ -82,8 +82,7 @@
      Scroll-spy — zvýrazní aktivní rok při scrollování
      ========================================================= */
 
-  var activeYear       = null;
-  var visibleSections  = new Set();
+  var activeYear = null;
 
   function setActiveYear(year) {
     var yearStr = String(year);
@@ -104,54 +103,50 @@
   }
 
   function initScrollSpy() {
-    var sections = document.querySelectorAll('.timeline-section');
+    var sections = Array.prototype.slice.call(
+      document.querySelectorAll('.timeline-section')
+    );
     if (!sections.length) return;
 
-    /* Pás, ve kterém detekujeme "aktivní" sekci:
-       od 25 % od vrchu po 70 % od vrchu viewportu. */
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          visibleSections.add(entry.target);
-        } else {
-          visibleSections.delete(entry.target);
-        }
-      });
-
-      /* Z viditelných sekcí vyber tu nejvýše v dokumentu. */
-      var allSections = Array.from(document.querySelectorAll('.timeline-section'));
-      var topmost = allSections.find(function (s) { return visibleSections.has(s); });
-      if (topmost) setActiveYear(topmost.dataset.year);
-    }, {
-      rootMargin: '-25% 0px -70% 0px',
-      threshold: 0
-    });
-
-    sections.forEach(function (s) { observer.observe(s); });
-
-    /* Detekce spodku stránky — poslední sekce se nikdy nedostane do
-       detekčního pásu (25–30 %), protože stránka skončí dřív. Když jsme
-       prakticky úplně dole, vynutíme jako aktivní poslední rok. */
-    var bottomTicking = false;
-    function checkBottom() {
-      bottomTicking = false;
+    function pickActiveYear() {
       var doc = document.documentElement;
-      /* Guard: jen když stránka reálně scrolluje. */
-      if (doc.scrollHeight <= window.innerHeight + 2) return;
-      var atBottom = window.innerHeight + window.scrollY >= doc.scrollHeight - 2;
-      if (atBottom && TIMELINE.length) {
-        setActiveYear(TIMELINE[TIMELINE.length - 1].year);
+
+      /* Snap na dně stránky — krátká poslední sekce by se jinak nemusela
+         dostat nad střed; takto je poslední rok zaručen vždy. */
+      if (window.innerHeight + window.scrollY >= doc.scrollHeight - 2) {
+        return sections[sections.length - 1].dataset.year;
       }
+
+      /* Referenční linka = střed viewportu (50 %). Aktivní je poslední sekce,
+         jejíž horní okraj již vystoupil nad linku. Sekce jsou seřazeny shora
+         dolů, takže první sekce pod linkou hledání ukončí. */
+      var line = window.innerHeight / 2;
+      var current = sections[0];
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i].getBoundingClientRect().top <= line) {
+          current = sections[i];
+        } else {
+          break;
+        }
+      }
+      return current.dataset.year;
     }
 
-    window.addEventListener('scroll', function () {
-      if (bottomTicking) return;
-      bottomTicking = true;
-      window.requestAnimationFrame(checkBottom);
-    }, { passive: true });
+    var ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () {
+        ticking = false;
+        setActiveYear(pickActiveYear());
+      });
+    }
 
-    /* Nastav výchozí aktivní rok (první v pořadí). */
-    if (TIMELINE.length) setActiveYear(TIMELINE[0].year);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    /* Výchozí stav hned po načtení stránky. */
+    setActiveYear(pickActiveYear());
   }
 
   /* =========================================================

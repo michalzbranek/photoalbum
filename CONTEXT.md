@@ -26,4 +26,4 @@ Fixní panel zobrazující seznam roků ze timeline. Umožňuje přeskočit př�
 
 ## Aktivní rok
 
-Rok, jehož sekce je aktuálně viditelná v centrální části viewportu. Příslušný odkaz v navigaci je automaticky zvýrazněn (třída `is-active`). Sledování zajišťuje `IntersectionObserver` v `js/main.js`.
+Rok, jehož sekce jako poslední překročila svým horním okrajem **střed viewportu**. Na úplném spodku stránky je aktivní vždy poslední rok. Příslušný odkaz v navigaci je automaticky zvýrazněn (třída `is-active`).
