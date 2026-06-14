@@ -129,6 +129,27 @@
 
     sections.forEach(function (s) { observer.observe(s); });
 
+    /* Detekce spodku stránky — poslední sekce se nikdy nedostane do
+       detekčního pásu (25–30 %), protože stránka skončí dřív. Když jsme
+       prakticky úplně dole, vynutíme jako aktivní poslední rok. */
+    var bottomTicking = false;
+    function checkBottom() {
+      bottomTicking = false;
+      var doc = document.documentElement;
+      /* Guard: jen když stránka reálně scrolluje. */
+      if (doc.scrollHeight <= window.innerHeight + 2) return;
+      var atBottom = window.innerHeight + window.scrollY >= doc.scrollHeight - 2;
+      if (atBottom && TIMELINE.length) {
+        setActiveYear(TIMELINE[TIMELINE.length - 1].year);
+      }
+    }
+
+    window.addEventListener('scroll', function () {
+      if (bottomTicking) return;
+      bottomTicking = true;
+      window.requestAnimationFrame(checkBottom);
+    }, { passive: true });
+
     /* Nastav výchozí aktivní rok (první v pořadí). */
     if (TIMELINE.length) setActiveYear(TIMELINE[0].year);
   }
