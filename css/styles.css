@@ -2,33 +2,35 @@
    Proměnné
    ======================================================================= */
 :root {
-  --nav-width:      88px;
-  --mobile-nav-h:   52px;
+  --nav-width: 88px;
+  --mobile-nav-h: 52px;
 
-  --accent:         #9b7c5e;   /* teplý hnědý tón — aktivní rok, nadpisy let */
-  --accent-line:    #ddd0c4;   /* barva vertikální / horizontální čáry nav */
-  --accent-bg:      rgba(155, 124, 94, 0.07);
+  --accent: #9b7c5e; /* teplý hnědý tón — aktivní rok, nadpisy let */
+  --accent-line: #ddd0c4; /* barva vertikální / horizontální čáry nav */
+  --accent-bg: rgba(155, 124, 94, 0.07);
 
-  --text:           #2c2c2b;
-  --text-muted:     #888;
-  --bg:             #ffffff;
-  --nav-bg:         #faf9f7;
-  --border-light:   #efefed;
+  --text: #2c2c2b;
+  --text-muted: #888;
+  --bg: #ffffff;
+  --nav-bg: #faf9f7;
+  --border-light: #efefed;
 
-  --section-gap:    8rem;
-  --content-max-w:  1280px;
-  --photo-max-h:    68vh;
+  --section-gap: 8rem;
+  --content-max-w: 1280px;
+  --photo-max-h: 68vh;
 
-  --radius:         3px;
-  --shadow-photo:   0 4px 28px rgba(0, 0, 0, 0.08);
+  --radius: 3px;
+  --shadow-photo: 0 4px 28px rgba(0, 0, 0, 0.08);
 
-  --ease:           0.22s ease;
+  --ease: 0.22s ease;
 }
 
 /* =======================================================================
    Reset & základ
    ======================================================================= */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -42,7 +44,13 @@ html {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Helvetica,
+    Arial,
+    sans-serif;
   line-height: 1.75;
 }
 
@@ -52,7 +60,7 @@ body {
    ======================================================================= */
 #timeline-nav {
   position: fixed;
-  inset: 0 auto 0 0;          /* top:0, right:auto, bottom:0, left:0 */
+  inset: 0 auto 0 0; /* top:0, right:auto, bottom:0, left:0 */
   width: var(--nav-width);
   background: var(--nav-bg);
   border-right: 2px solid var(--accent-line);
@@ -65,7 +73,9 @@ body {
   scrollbar-width: none;
 }
 
-#timeline-nav::-webkit-scrollbar { display: none; }
+#timeline-nav::-webkit-scrollbar {
+  display: none;
+}
 
 #nav-list {
   list-style: none;
@@ -92,7 +102,10 @@ body {
   color: var(--text-muted);
   text-decoration: none;
   border-radius: var(--radius);
-  transition: color var(--ease), background var(--ease), font-weight var(--ease);
+  transition:
+    color var(--ease),
+    background var(--ease),
+    font-weight var(--ease);
   text-align: center;
   white-space: nowrap;
 }
@@ -151,7 +164,7 @@ body {
   align-items: center;
   padding: var(--section-gap) 0;
   border-bottom: 1px solid var(--border-light);
-  scroll-margin-top: 2rem;   /* odsazení pro native anchor scroll */
+  scroll-margin-top: 2rem; /* odsazení pro native anchor scroll */
 }
 
 .timeline-section:last-child {
@@ -160,12 +173,20 @@ body {
 }
 
 /* Liché sekce: fotka vlevo, text vpravo */
-.section-photo { order: 1; }
-.section-text  { order: 2; }
+.section-photo {
+  order: 1;
+}
+.section-text {
+  order: 2;
+}
 
 /* Sudé sekce: text vlevo, fotka vpravo */
-.timeline-section:nth-child(even) .section-photo { order: 2; }
-.timeline-section:nth-child(even) .section-text  { order: 1; }
+.timeline-section:nth-child(even) .section-photo {
+  order: 2;
+}
+.timeline-section:nth-child(even) .section-text {
+  order: 1;
+}
 
 /* — Fotografie — */
 .section-photo {
@@ -211,9 +232,9 @@ body {
    ======================================================================= */
 @media (min-width: 768px) and (max-width: 1023px) {
   :root {
-    --nav-width:    72px;
-    --section-gap:  6rem;
-    --photo-max-h:  60vh;
+    --nav-width: 72px;
+    --section-gap: 6rem;
+    --photo-max-h: 60vh;
   }
 
   #site-header {
@@ -231,13 +252,13 @@ body {
    ======================================================================= */
 @media (max-width: 767px) {
   :root {
-    --section-gap:  3.5rem;
-    --photo-max-h:  60vh;
+    --section-gap: 3.5rem;
+    --photo-max-h: 60vh;
   }
 
   /* Přepíná vertikální nav na horizontální lištu */
   #timeline-nav {
-    inset: 0 0 auto 0;          /* top:0, right:0, bottom:auto, left:0 */
+    inset: 0 0 auto 0; /* top:0, right:0, bottom:auto, left:0 */
     width: 100%;
     height: var(--mobile-nav-h);
     border-right: none;
@@ -288,8 +309,12 @@ body {
   }
 
   /* Fotka vždy nahoře — přebijeme střídání */
-  .section-photo { order: 1 !important; }
-  .section-text  { order: 2 !important; }
+  .section-photo {
+    order: 1 !important;
+  }
+  .section-text {
+    order: 2 !important;
+  }
 
   /* Na mobilu fotka plná šířka, poměr zachován (bez max-height = bez deformace) */
   .section-photo img {
