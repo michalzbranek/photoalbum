@@ -2,9 +2,12 @@
 
 ## Co je tento projekt
 
-Responzivní statická webová stránka — fotoalbum ve formě **časové osy (timeline)**.
-Vanilla HTML/CSS/JS, **žádné závislosti, žádný build krok**. Přímo nasazeno na
-GitHub Pages z větve `main`.
+Responzivní statická webová stránka — fotoalbum ve formě **časové osy (timeline)**
+v "Immersive" designu: tmavá galerie, full-bleed fotky s obrysovými letopočty
+v overlay, fixní horní navigace, jemné scroll animace (reveal) a galerie
+miniatur u každého roku. Vanilla HTML/CSS/JS, **žádné závislosti, žádný build
+krok** (jediná externí věc je odkaz na Google Fonts v `index.html` — žádný npm
+balíček ani bundler). Přímo nasazeno na GitHub Pages z větve `main`.
 
 Živá URL: **https://michalzbranek.github.io/photoalbum/**
 
@@ -16,10 +19,10 @@ GitHub Pages z větve `main`.
 photoalbum/
 ├── index.html          # HTML kostra; nav a sekce generuje JS
 ├── css/
-│   └── styles.css      # styly (mobile-first, 3 breakpointy: <768, 768–1023, ≥1024)
+│   └── styles.css      # styly (mobile-first; breakpoint na 720px)
 ├── js/
 │   ├── data.js         # ← OBSAH: název alba (ALBUM_TITLE) + pole roků (TIMELINE)
-│   └── main.js         # render navigace a sekcí + scroll-spy (IntersectionObserver)
+│   └── main.js         # render navigace a sekcí + scroll-spy + reveal animace
 ├── images/             # sem patří fotografie
 ├── CONTEXT.md          # glosář doménových pojmů (Timeline, Sekce roku, Navigace…)
 ├── README.md           # uživatelský návod (přidat rok, nasadit, optimalizovat fotky)
@@ -56,11 +59,15 @@ Komentáře v kódu mohou být česky nebo anglicky.
 
 ### Fotografie
 - Ukládat do složky `images/`.
-- V `data.js` uvést relativní cestu: `"images/2024.jpg"`.
-- Vždy vyplnit pole `alt` — stručně, ale smysluplně (pro přístupnost i SEO).
-- Doporučená příprava: šířka **1 200–1 600 px**, formát **WebP nebo JPG (kvalita 80–85 %)**.
+- V `data.js` uvést pole `photos` s relativními cestami, např.
+  `["images/2024-1.jpg", "images/2024-2.jpg"]`. **První fotka** v poli se
+  zobrazí jako velká (hero); všechny fotky (včetně první) se navíc ukážou jako
+  miniatury pod ní — kliknutím na miniaturu se fotka zobrazí nahoře (miniatury
+  se nemění).
+- Vždy vyplnit pole `alt` — stručně, ale smysluplně, popisuje celou skupinu
+  fotek daného roku (pro přístupnost i SEO).
+- Doporučená příprava: šířka **~1600 px**, formát **JPG (kvalita 80–85 %) nebo WebP**.
   Větší soubory zbytečně nafukují repo a zpomalují načítání.
-- Poměr stran fotek se **zachovává** — nic se neořezává (`object-fit` se nepoužívá).
 
 ### Sémantické HTML
 Používat sémantické tagy: `<nav>`, `<main>`, `<section>`, `<header>`, `<figure>`.
@@ -77,15 +84,15 @@ přidávají tablet a desktop.
 
 ### Přidat nový rok
 
-1. Připrav a optimalizuj fotografii → ulož do `images/YYYY.jpg` (nebo `.webp`).
+1. Připrav a optimalizuj fotografie → ulož do `images/YYYY-1.jpg`, `images/YYYY-2.jpg`, … (nebo `.webp`).
 2. Otevři `js/data.js` a přidej objekt do pole `TIMELINE` (nejstarší rok první):
 
 ```js
 {
   year: 2026,
-  text: "Text vzpomínky…",
-  image: "images/2026.jpg",
-  alt: "Popisek fotografie pro přístupnost"
+  text: 'Text vzpomínky…',
+  photos: ['images/2026-1.jpg', 'images/2026-2.jpg', 'images/2026-3.jpg'],
+  alt: 'Popis fotografií',
 }
 ```
 

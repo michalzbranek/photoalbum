@@ -1,74 +1,31 @@
-# Fotoalbum
+# Fotoalbum — Immersive
 
-Responzivní statická webová stránka — fotoalbum ve formě časové osy.
-Žádné závislosti, žádný build. Funguje přímo z prohlížeče.
+Modernizovaná verze fotoalba: tmavá galerie, full-bleed fotky, obrysové letopočty,
+scroll-spy navigace, jemné scroll animace a galerie miniatur u každého roku.
+Žádné závislosti, žádný build — stejná struktura jako původní projekt.
 
-## Jak přidat rok
+## Jak nasadit
 
-1. Ulož fotografii do složky `images/` (doporučený formát: JPG nebo WebP, šířka ~1 200–1 600 px).
-2. Otevři `js/data.js` a přidej nový objekt do pole `TIMELINE`:
+Nahraď v repozitáři soubory \`index.html\`, \`css/styles.css\`, \`js/data.js\` a \`js/main.js\`
+těmito verzemi a pushni na GitHub. GitHub Pages se aktualizuje automaticky.
 
-```js
+## Jak přidat rok / fotky
+
+V \`js/data.js\` má každý rok pole \`photos\`:
+
+\`\`\`js
 {
   year: 2026,
-  text: "Text vzpomínky na tento rok…",
-  image: "images/2026.jpg",
-  alt: "Stručný popis fotografie pro přístupnost"
+  text: 'Text vzpomínky…',
+  photos: ['images/2026-1.jpg', 'images/2026-2.jpg', 'images/2026-3.jpg'],
+  alt: 'Popis fotografií',
 }
-```
+\`\`\`
 
-Záznamy nechej seřazené od nejstaršího roku po nejnovější.
+- První fotka v poli se zobrazí jako velká.
+- Všechny fotky se ukážou jako miniatury; kliknutím na miniaturu se fotka zobrazí nahoře (miniatury se nemění).
+- Doporučená šířka fotek: ~1600 px (JPG kvalita 80–85 % nebo WebP).
 
-## Jak změnit název alba
+## Název alba
 
-V `js/data.js` uprav konstantu `ALBUM_TITLE`:
-
-```js
-const ALBUM_TITLE = "Název tvého alba";
-```
-
-## Jak spustit lokálně
-
-Stránka vyžaduje jednoduchý HTTP server (přímé otevření `index.html` v prohlížeči
-nefunguje správně kvůli lazy-loadingu a bezpečnostním omezením).
-
-Pokud máš nainstalovaný Python 3:
-
-```bash
-python3 -m http.server
-# Otevři http://localhost:8000
-```
-
-Alternativy: VS Code Live Server, `npx serve`, `npx http-server`.
-
-## Nasazení na GitHub Pages
-
-1. Push repozitář na GitHub.
-2. V repozitáři otevři **Settings → Pages**.
-3. Pod **Source** vyber větev `main` a složku `/ (root)`.
-4. Uložit — stránka bude za chvíli dostupná na `https://<username>.github.io/<repo>/`.
-
-## Optimalizace fotografií
-
-Velké soubory v repu zpomalí stahování a mohou překročit limity GitHubu.
-Doporučená příprava fotek před nahráním:
-
-- Šířka: 1 200–1 600 px (větší rozlišení není v prohlížeči vidět)
-- Formát: WebP (~30–40 % menší než JPG při stejné kvalitě), nebo JPG s kvalitou 80–85 %
-- Nástroje: [Squoosh](https://squoosh.app/), ImageMagick, Preview (macOS)
-
-## Struktura projektu
-
-```
-photoalbum/
-├── index.html          # HTML kostra stránky
-├── css/
-│   └── styles.css      # styly (mobile-first, 3 breakpointy)
-├── js/
-│   ├── data.js         # OBSAH — zde edituj roky, texty, fotky
-│   └── main.js         # logika: render, navigace, scroll-spy
-├── images/             # sem patří tvé fotografie
-├── CONTEXT.md          # glosář pojmů projektu
-├── .nojekyll           # vypíná Jekyll processing na GitHub Pages
-└── README.md           # tento soubor
-```
+V \`js/data.js\` uprav \`ALBUM_TITLE\`.

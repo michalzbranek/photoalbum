@@ -11,18 +11,17 @@ Celá časová osa fotoalba. Skládá se ze **sekcí roků** seřazených od nej
 ## Sekce roku
 
 Jedna vizuální jednotka časové osy odpovídající konkrétnímu roku. Každá sekce obsahuje:
-- rok (zobrazený jako velký číselný nadpis)
-- fotografii
-- text vzpomínky
-
-Sudé a liché sekce střídají strany rozvržení (fotka vlevo / vpravo).
+- full-bleed velkou fotku (první z pole `photos`) s tmavým overlay, přes který
+  je obrysový letopočet a text vzpomínky
+- galerii miniatur se všemi fotkami daného roku (pokud je jich víc) — klik na
+  miniaturu vymění fotku zobrazenou nahoře, miniatury samy se nemění
 
 ## Navigace
 
-Fixní panel zobrazující seznam roků ze timeline. Umožňuje přeskočit přímo na konkrétní sekci roku.
-
-- **Desktop / tablet:** vertikální lišta na levém okraji obrazovky s vertikální čárou
-- **Mobil:** horizontální lišta fixovaná nahoře (vodorovně scrollovatelná)
+Fixní horní lišta (`#site-header`) se seznamem roků ze timeline. Umožňuje
+přeskočit přímo na konkrétní sekci roku. Na mobilu (< 720 px) se zalamuje a
+zůstává vystředěná; na širších obrazovkách je řádek roků zarovnaný doprava
+vedle názvu alba.
 
 ## Aktivní rok
 
