@@ -12,7 +12,7 @@ Celá časová osa fotoalba. Skládá se ze **sekcí roků** seřazených od nej
 
 Jedna vizuální jednotka časové osy odpovídající konkrétnímu roku. Každá sekce obsahuje:
 - full-bleed velkou fotku (první z pole `photos`) s tmavým overlay, přes který
-  je obrysový letopočet a text vzpomínky
+  je velký letopočet a text vzpomínky
 - galerii miniatur se všemi fotkami daného roku (pokud je jich víc) — klik na
   miniaturu vymění fotku zobrazenou nahoře, miniatury samy se nemění
 
