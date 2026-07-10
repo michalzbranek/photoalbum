@@ -3,7 +3,7 @@
 ## Co je tento projekt
 
 Responzivní statická webová stránka — fotoalbum ve formě **časové osy (timeline)**
-v "Immersive" designu: tmavá galerie, full-bleed fotky s obrysovými letopočty
+v "Immersive" designu: tmavá galerie, full-bleed fotky s velkými letopočty
 v overlay, fixní horní navigace, jemné scroll animace (reveal) a galerie
 miniatur u každého roku. Vanilla HTML/CSS/JS, **žádné závislosti, žádný build
 krok** (jediná externí věc je odkaz na Google Fonts v `index.html` — žádný npm

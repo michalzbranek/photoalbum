@@ -1,6 +1,6 @@
 # Fotoalbum — Immersive
 
-Modernizovaná verze fotoalba: tmavá galerie, full-bleed fotky, obrysové letopočty,
+Modernizovaná verze fotoalba: tmavá galerie, full-bleed fotky, velké letopočty,
 scroll-spy navigace, jemné scroll animace a galerie miniatur u každého roku.
 Žádné závislosti, žádný build — stejná struktura jako původní projekt.
 
