@@ -1,39 +1,30 @@
 ;(function () {
   'use strict'
 
-  /* =========================================================
-     Pomocné funkce
-     ========================================================= */
-
-  /** Vrátí ID sekce pro daný rok (např. "rok-2019"). */
   function idForYear(year) {
     return 'rok-' + year
   }
 
   /* =========================================================
-     Sestavení navigace
+     Navigace
      ========================================================= */
 
   function buildNav() {
-    var list = document.getElementById('nav-list')
-    if (!list) return
+    var nav = document.getElementById('year-nav')
+    if (!nav) return
 
     TIMELINE.forEach(function (entry) {
-      var li = document.createElement('li')
       var a = document.createElement('a')
-
       a.href = '#' + idForYear(entry.year)
       a.textContent = entry.year
       a.dataset.year = String(entry.year)
       a.setAttribute('aria-label', 'Přejít na rok ' + entry.year)
-
-      li.appendChild(a)
-      list.appendChild(li)
+      nav.appendChild(a)
     })
   }
 
   /* =========================================================
-     Sestavení sekcí roků
+     Sekce roků
      ========================================================= */
 
   function buildSections() {
@@ -42,94 +33,95 @@
 
     TIMELINE.forEach(function (entry) {
       var section = document.createElement('section')
-      section.className = 'timeline-section'
       section.id = idForYear(entry.year)
       section.dataset.year = String(entry.year)
 
-      /* — Fotografie — */
-      var photoDiv = document.createElement('div')
-      photoDiv.className = 'section-photo'
+      /* — Velká fotka s letopočtem a textem — */
+      var hero = document.createElement('div')
+      hero.className = 'year-hero reveal'
 
       var img = document.createElement('img')
-      img.src = entry.image
+      img.src = entry.photos[0]
       img.alt = entry.alt || ''
       img.loading = 'lazy'
+      img.className = 'year-hero-img'
+      hero.appendChild(img)
 
-      photoDiv.appendChild(img)
+      var overlay = document.createElement('div')
+      overlay.className = 'year-overlay'
 
-      /* — Text — */
-      var textDiv = document.createElement('div')
-      textDiv.className = 'section-text'
-
-      var h2 = document.createElement('h2')
-      h2.className = 'section-year'
-      h2.textContent = entry.year
+      var num = document.createElement('div')
+      num.className = 'year-number'
+      num.textContent = entry.year
 
       var p = document.createElement('p')
-      p.className = 'section-content'
+      p.className = 'year-text'
       p.textContent = entry.text
 
-      textDiv.appendChild(h2)
-      textDiv.appendChild(p)
+      overlay.appendChild(num)
+      overlay.appendChild(p)
+      hero.appendChild(overlay)
+      section.appendChild(hero)
 
-      section.appendChild(photoDiv)
-      section.appendChild(textDiv)
+      /* — Miniatury (všechny fotky roku; klik = zobrazit nahoře) — */
+      if (entry.photos.length > 1) {
+        var thumbs = document.createElement('div')
+        thumbs.className = 'year-thumbs reveal'
+
+        entry.photos.forEach(function (src, i) {
+          var t = document.createElement('img')
+          t.src = src
+          t.alt = (entry.alt || 'Fotografie') + ' — fotka ' + (i + 1)
+          t.loading = 'lazy'
+          t.addEventListener('click', function () {
+            img.src = src
+          })
+          thumbs.appendChild(t)
+        })
+
+        section.appendChild(thumbs)
+      }
+
       container.appendChild(section)
     })
   }
 
   /* =========================================================
-     Scroll-spy — zvýrazní aktivní rok při scrollování
+     Scroll-spy + scroll reveal
      ========================================================= */
 
-  var activeYear = null
+  function initScroll() {
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section[data-year]'))
+    var links = Array.prototype.slice.call(document.querySelectorAll('#year-nav a'))
+    var reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'))
+    var activeYear = null
 
-  function setActiveYear(year) {
-    var yearStr = String(year)
-    if (yearStr === activeYear) return
-    activeYear = yearStr
-
-    var links = document.querySelectorAll('#nav-list a')
-    links.forEach(function (a) {
-      a.classList.remove('is-active')
-    })
-
-    var activeLink = document.querySelector('#nav-list a[data-year="' + yearStr + '"]')
-    if (!activeLink) return
-
-    activeLink.classList.add('is-active')
-
-    /* Posuň nav lištu tak, aby byl aktivní rok viditelný
-       (důležité pro mobilní horizontální lištu). */
-    activeLink.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' })
-  }
-
-  function initScrollSpy() {
-    var sections = Array.prototype.slice.call(document.querySelectorAll('.timeline-section'))
-    if (!sections.length) return
-
-    function pickActiveYear() {
-      var doc = document.documentElement
-
-      /* Snap na dně stránky — krátká poslední sekce by se jinak nemusela
-         dostat nad střed; takto je poslední rok zaručen vždy. */
-      if (window.innerHeight + window.scrollY >= doc.scrollHeight - 2) {
-        return sections[sections.length - 1].dataset.year
-      }
-
-      /* Referenční linka = střed viewportu (50 %). Aktivní je poslední sekce,
-         jejíž horní okraj již vystoupil nad linku. Sekce jsou seřazeny shora
-         dolů, takže první sekce pod linkou hledání ukončí. */
-      var line = window.innerHeight / 2
-      var current = sections[0]
-      for (var i = 0; i < sections.length; i++) {
-        if (sections[i].getBoundingClientRect().top <= line) {
-          current = sections[i]
-        } else {
-          break
+    function update() {
+      /* reveal prvků, které vstoupily do viewportu */
+      reveals.forEach(function (el) {
+        if (
+          !el.classList.contains('is-visible') &&
+          el.getBoundingClientRect().top < window.innerHeight * 0.92
+        ) {
+          el.classList.add('is-visible')
         }
+      })
+
+      /* scroll-spy */
+      if (!sections.length) return
+      var line = window.innerHeight / 2
+      var cur = null
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i].getBoundingClientRect().top <= line) cur = sections[i].dataset.year
       }
-      return current.dataset.year
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+        cur = sections[sections.length - 1].dataset.year
+      }
+      if (cur === activeYear) return
+      activeYear = cur
+      links.forEach(function (a) {
+        a.classList.toggle('is-active', a.dataset.year === cur)
+      })
     }
 
     var ticking = false
@@ -138,15 +130,13 @@
       ticking = true
       window.requestAnimationFrame(function () {
         ticking = false
-        setActiveYear(pickActiveYear())
+        update()
       })
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll, { passive: true })
-
-    /* Výchozí stav hned po načtení stránky. */
-    setActiveYear(pickActiveYear())
+    update()
   }
 
   /* =========================================================
@@ -155,21 +145,15 @@
 
   function setTitle() {
     var title = typeof ALBUM_TITLE !== 'undefined' && ALBUM_TITLE ? ALBUM_TITLE : 'Fotoalbum'
-
-    var h1 = document.getElementById('site-title')
-    if (h1) h1.textContent = title
-
+    var el = document.getElementById('site-title')
+    if (el) el.textContent = title
     document.title = title
   }
-
-  /* =========================================================
-     Inicializace po načtení DOM
-     ========================================================= */
 
   document.addEventListener('DOMContentLoaded', function () {
     setTitle()
     buildNav()
     buildSections()
-    initScrollSpy()
+    initScroll()
   })
 })()

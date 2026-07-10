@@ -4,25 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fotoalbum</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <!-- Navigace: vertikální lišta na desktopu, horizontální na mobilu -->
-    <nav id="timeline-nav" aria-label="Navigace po rocích">
-      <ul id="nav-list" role="list"></ul>
-    </nav>
+    <!-- Fixní horní lišta: název + roky (generuje main.js) -->
+    <header id="site-header">
+      <a id="site-title" href="#top"></a>
+      <nav id="year-nav" aria-label="Navigace po rocích"></nav>
+    </header>
 
-    <main id="main-content">
-      <header id="site-header">
-        <h1 id="site-title"></h1>
-      </header>
-
+    <main id="top">
       <!-- Sekce roků generuje main.js z dat v data.js -->
       <div id="sections-container"></div>
     </main>
 
     <noscript>
-      <p style="padding: 2rem; font-family: sans-serif; color: #555">
+      <p style="padding: 2rem; font-family: sans-serif; color: #aaa">
         Pro zobrazení fotoalba je vyžadován JavaScript.
       </p>
     </noscript>
